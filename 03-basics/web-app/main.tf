@@ -1,13 +1,13 @@
 terraform {
   # Assumes s3 bucket and dynamo DB table already set up
   # See /code/03-basics/aws-backend
-  backend "s3" {
-    bucket         = "devops-directive-tf-state"
-    key            = "03-basics/web-app/terraform.tfstate"
-    region         = "us-east-1"
-    dynamodb_table = "terraform-state-locking"
-    encrypt        = true
-  }
+  # backend "s3" {
+  #   bucket         = "devops-directive-tf-state"
+  #   key            = "03-basics/web-app/terraform.tfstate"
+  #   region         = "us-east-1"
+  #   dynamodb_table = "terraform-state-locking"
+  #   encrypt        = true
+  # }
 
   required_providers {
     aws = {
@@ -43,26 +43,26 @@ resource "aws_instance" "instance_2" {
               EOF
 }
 
-resource "aws_s3_bucket" "bucket" {
-  bucket_prefix = "devops-directive-web-app-data"
-  force_destroy = true
-}
+# resource "aws_s3_bucket" "bucket" {
+#   bucket_prefix = "devops-akash-web-app-data"
+#   force_destroy = true
+# }
 
-resource "aws_s3_bucket_versioning" "bucket_versioning" {
-  bucket = aws_s3_bucket.bucket.id
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
+# resource "aws_s3_bucket_versioning" "bucket_versioning" {
+#   bucket = aws_s3_bucket.bucket.id
+#   versioning_configuration {
+#     status = "Enabled"
+#   }
+# }
 
-resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_crypto_conf" {
-  bucket = aws_s3_bucket.bucket.bucket
-  rule {
-    apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
-    }
-  }
-}
+# resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_crypto_conf" {
+#   bucket = aws_s3_bucket.bucket.bucket
+#   rule {
+#     apply_server_side_encryption_by_default {
+#       sse_algorithm = "AES256"
+#     }
+#   }
+# }
 
 data "aws_vpc" "default_vpc" {
   default = true
@@ -186,21 +186,21 @@ resource "aws_lb" "load_balancer" {
 
 }
 
-resource "aws_route53_zone" "primary" {
-  name = "devopsdeployed.com"
-}
+# resource "aws_route53_zone" "primary" {
+#   name = "devopsdeployed.com"
+# }
 
-resource "aws_route53_record" "root" {
-  zone_id = aws_route53_zone.primary.zone_id
-  name    = "devopsdeployed.com"
-  type    = "A"
+# resource "aws_route53_record" "root" {
+#   zone_id = aws_route53_zone.primary.zone_id
+#   name    = "devopsdeployed.com"
+#   type    = "A"
 
-  alias {
-    name                   = aws_lb.load_balancer.dns_name
-    zone_id                = aws_lb.load_balancer.zone_id
-    evaluate_target_health = true
-  }
-}
+#   alias {
+#     name                   = aws_lb.load_balancer.dns_name
+#     zone_id                = aws_lb.load_balancer.zone_id
+#     evaluate_target_health = true
+#   }
+# }
 
 resource "aws_db_instance" "db_instance" {
   allocated_storage = 20
