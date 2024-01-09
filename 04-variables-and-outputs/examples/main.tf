@@ -1,11 +1,11 @@
 terraform {
-  backend "s3" {
-    bucket         = "devops-directive-tf-state"
-    key            = "04-variables-and-outputs/examples/terraform.tfstate"
-    region         = "us-east-1"
-    dynamodb_table = "terraform-state-locking"
-    encrypt        = true
-  }
+  # backend "s3" {
+  #   bucket         = "devops-directive-tf-state"
+  #   key            = "04-variables-and-outputs/examples/terraform.tfstate"
+  #   region         = "us-east-1"
+  #   dynamodb_table = "terraform-state-locking"
+  #   encrypt        = true
+  # }
 
   required_providers {
     aws = {
@@ -20,7 +20,7 @@ provider "aws" {
 }
 
 locals {
-  extra_tag = "extra-tag"
+  extra_tag = "akash-tag"
 }
 
 resource "aws_instance" "instance" {
